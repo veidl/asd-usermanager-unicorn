@@ -1,13 +1,17 @@
 package com.example.manager.domain;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+
+@Document(collection = "Users")
 public class User {
 
+	@Id
+	private String username;
+	
 	private String firstname;
 	private String lastname;
-	private String username;
 	private String password;
 	
 	public User(String firstname, String lastname, String username, String password) {
