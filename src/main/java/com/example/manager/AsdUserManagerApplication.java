@@ -53,22 +53,26 @@ public class AsdUserManagerApplication implements CommandLineRunner {
         System.out.println("------------------------------------------");
         System.out.println("Please enter number to choose an option: \n (1)Register \n (2)Login \n (3)Exit \n");
 
-        Scanner scn = new Scanner(System.in);
-        int userInput = scn.nextInt();
+        try (Scanner scn = new Scanner(System.in)) {
+            int userInput = scn.nextInt();
 
-        switch (userInput) {
-            case 1:
-                registerMenu();
-                break;
-            case 2:
-                loginMenu();
-                break;
-            case 3:
-                System.out.println("Closed UserManager!");
-                System.exit(0);
-            default:
-                System.out.println("Invalid Input! Restarting....");
-                showMenu();
+            switch (userInput) {
+                case 1:
+                    registerMenu();
+                    break;
+                case 2:
+                    loginMenu();
+                    break;
+                case 3:
+                    System.out.println("Closed UserManager!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Input! Restarting....");
+                    showMenu();
+            }
+        }
+        catch (Exception e){
+            System.out.println("\nError while getting user input!\n Shutting down User Manager...\n");
         }
     }
 
@@ -98,10 +102,12 @@ public class AsdUserManagerApplication implements CommandLineRunner {
 
         User user = new User(firstname, lastname, username, bCryptEncodedPassword, failedAttempt, accountNonLocked, lockTime);
         uc.register(user);
-
+        
+        loginMenu();
     }
 
     private void loginMenu() {
+
         System.out.println("--- Login Menu ---");
 
 
@@ -109,19 +115,20 @@ public class AsdUserManagerApplication implements CommandLineRunner {
         String username = scn.next();
         System.out.println("Please enter password:");
         String password = scn.next();
-
+        
+        
         while (!uc.login(username, password)) {
-            System.out.println("Username or password incorrect. Try again!");
+            System.out.println("Username or password incorrect. Try again!\n");
             System.out.println("Please enter username:");
             username = scn.next();
             System.out.println("Please enter password:");
             password = scn.next();
 
         }
-        loggedInMenu(username);
+        loggedInMenu(username, password);
     }
 
-    private void loggedInMenu(String username) {
+    private void loggedInMenu(String username, String password) {
 
         System.out.println("\n--- Logged in as " + username + "---\n");
         System.out.println("Choose Options: \n (1)Change password \n (2)Delete Account \n (3)Logout");
@@ -129,7 +136,7 @@ public class AsdUserManagerApplication implements CommandLineRunner {
         int userInput = scn.nextInt();
         switch (userInput) {
             case 1:
-                changePasswordMenu(username);
+                changePasswordMenu(username, password);
                 break;
             case 2:
                 deleteAccountMenu(username);
@@ -141,10 +148,35 @@ public class AsdUserManagerApplication implements CommandLineRunner {
 
     }
 
-    private void changePasswordMenu(String username) {
-        System.out.println("Please enter a new Password");
-        String newPassword = scn.next();
+    private void changePasswordMenu(String username, String password) {
+        boolean passwordResetSucess = false;
+        String newPassword = null;
+        String confirmNewPassword = null;
+
+        while(!passwordResetSucess){
+            String confirmPassword = "";
+
+            while (!confirmPassword.equals(password)) {
+                System.out.println("Please enter password to update your password:");
+                confirmPassword = scn.next();
+            }
+
+            System.out.println("Please enter a new Password: ");
+            newPassword = scn.next();
+            System.out.println("Please confirm the new Password: ");
+            confirmNewPassword = scn.next();
+
+            if(newPassword.equals(confirmNewPassword)){
+                passwordResetSucess = true;
+            }
+            else{
+                System.out.println("Passwords do not match! Try again!\n");
+            }
+        }
+
+        System.out.println("Password changed successfully!\n");
         uc.changePassword(username, newPassword);
+        loggedInMenu(username, password);
     }
 
     private void deleteAccountMenu(String username) {

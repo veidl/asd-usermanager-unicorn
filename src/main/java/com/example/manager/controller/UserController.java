@@ -1,5 +1,7 @@
 package com.example.manager.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
@@ -64,12 +66,14 @@ public class UserController {
                 if (temp.getAccountNonLocked() && temp.getFailedAttempt() < maxFailedAttempts) {
                     increaseFailedAttempts(username);
                     temp = repo.findById(username).get();
-                    System.out.println("Failed attempt " + temp.getFailedAttempt() + "/3.");
+                    System.out.println("Failed attempt " + temp.getFailedAttempt() + "/4.");
                 } else {
                     temp = repo.findById(username).get();
                     if (temp.getFailedAttempt() == maxFailedAttempts) {
                         lock(username);
-                        System.out.println("User locked for 60 seconds.");
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                        LocalDateTime  loginFailed = LocalDateTime.now().plusMinutes(1);
+                        System.out.println("User locked until " + dtf.format(loginFailed) + ".\n");
                         return false;
                     }
                     unlockAfterTimeExpired(username);
@@ -77,7 +81,7 @@ public class UserController {
                 return false;
             }
         }
-        System.out.println("Username does not match an existing one. \n Please enter a valid username");
+        System.out.println("Username does not match an existing one. \n Please enter a valid username\n");
         return false;
     }
 
@@ -89,7 +93,7 @@ public class UserController {
     }
 
     public void logout() {
-        System.out.println("You are logged out!");
+        System.out.println("You are logged out!\n");
     }
 
     public void increaseFailedAttempts(String username) {
