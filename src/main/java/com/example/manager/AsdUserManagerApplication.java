@@ -27,24 +27,9 @@ public class AsdUserManagerApplication implements CommandLineRunner {
 
     }
 
-
     @Override
     public void run(String... args) throws Exception {
-        // TODO Auto-generated method stub
-        //System.out.println("Creating User!");
-        //User firstUser = new User("Arnold", "Schwarzenegger", "arnie", "Bizeps");
         showMenu();
-        //System.out.println("Registering User!");
-        //uc.register(firstUser);
-        //if(uc.login("arnie", "Bizeps")) {
-        //	System.out.println("Success!");
-        //} else {
-        //	System.out.println("Wrong my G");
-        //}
-
-        //System.out.println("This happened" + uc.deleteAccount(firstUser.getUsername()));
-
-
     }
 
     private void showMenu() {
@@ -157,32 +142,31 @@ public class AsdUserManagerApplication implements CommandLineRunner {
             String confirmPassword = "";
 
             while (!confirmPassword.equals(password)) {
-                System.out.println("Please enter password to update your password:");
+                System.out.println("Please enter your password to change it: ");
                 confirmPassword = scn.next();
             }
 
-            System.out.println("Please enter a new Password: ");
+            System.out.println("Please enter your new Password: ");
             newPassword = scn.next();
             System.out.println("Please confirm the new Password: ");
             confirmNewPassword = scn.next();
 
             if(newPassword.equals(confirmNewPassword)){
                 passwordResetSucess = true;
+                System.out.println("Password changed successfully!\nLogout necessary for reset!\n");
+                uc.changePassword(username, newPassword);
+                showMenu();
             }
             else{
                 System.out.println("Passwords do not match! Try again!\n");
             }
         }
-
-        System.out.println("Password changed successfully!\n");
-        uc.changePassword(username, newPassword);
-        loggedInMenu(username, password);
     }
 
     private void deleteAccountMenu(String username) {
         System.out.println("\n--- Account Deletion ---");
 
-        System.out.println("Please enter password for account deletion:");
+        System.out.println("Please enter your password for account deletion:");
         String passwordIn = scn.next();
 
         while (!uc.login(username, passwordIn)) {

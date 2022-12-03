@@ -3,12 +3,9 @@ package com.example.manager.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.manager.repository.UserRepository;
@@ -72,7 +69,7 @@ public class UserController {
                     if (temp.getFailedAttempt() == maxFailedAttempts) {
                         lock(username);
                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                        LocalDateTime  loginFailed = LocalDateTime.now().plusMinutes(1);
+                        LocalDateTime  loginFailed = LocalDateTime.now().plusSeconds(60);
                         System.out.println("User locked until " + dtf.format(loginFailed) + ".\n");
                         return false;
                     }
