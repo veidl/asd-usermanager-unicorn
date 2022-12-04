@@ -87,8 +87,8 @@ public class AsdUserManagerApplication implements CommandLineRunner {
 
         User user = new User(firstname, lastname, username, bCryptEncodedPassword, failedAttempt, accountNonLocked, lockTime);
         uc.register(user);
-        
-        loginMenu();
+        System.out.println("User was successfully created.");
+        showMenu();
     }
 
     private void loginMenu() {
@@ -142,7 +142,7 @@ public class AsdUserManagerApplication implements CommandLineRunner {
             String confirmPassword = "";
 
             while (!confirmPassword.equals(password)) {
-                System.out.println("Please enter your password to change it: ");
+                System.out.println("Please enter your current password to be able to change it: ");
                 confirmPassword = scn.next();
             }
 
@@ -153,9 +153,11 @@ public class AsdUserManagerApplication implements CommandLineRunner {
 
             if(newPassword.equals(confirmNewPassword)){
                 passwordResetSucess = true;
-                System.out.println("Password changed successfully!\nLogout necessary for reset!\n");
                 uc.changePassword(username, newPassword);
-                showMenu();
+                System.out.println("Password changed successfully!");
+                loggedInMenu(username, newPassword);
+                //System.out.println("Password changed successfully!\nLogout necessary for reset!\n");
+                //showMenu();
             }
             else{
                 System.out.println("Passwords do not match! Try again!\n");
