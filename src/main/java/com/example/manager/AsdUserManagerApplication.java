@@ -156,8 +156,6 @@ public class AsdUserManagerApplication implements CommandLineRunner {
                 uc.changePassword(username, newPassword);
                 System.out.println("Password changed successfully!");
                 loggedInMenu(username, newPassword);
-                //System.out.println("Password changed successfully!\nLogout necessary for reset!\n");
-                //showMenu();
             }
             else{
                 System.out.println("Passwords do not match! Try again!\n");
