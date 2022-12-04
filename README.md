@@ -14,6 +14,6 @@ We recommend using Visual Studio Code to run it, as it is simple for setting a s
 
 The user manager is a console application, which allows to create and manage an user account.
 The available user input options are displayed by the app and the user can choose options by choosing on of the
-corresponding displayed numbers on the menu and hitting the "Enter"- key.
+corresponding displayed numbers one the menu and hitting the "Enter"- key.
 Available Options are: Register, Login, Change Password, Account Deletion and Logout.
 
