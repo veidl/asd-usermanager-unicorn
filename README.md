@@ -16,4 +16,5 @@ The user manager is a console application, which allows to create and manage use
 The available user input options are displayed by the app and the user can choose options by choosing one of the
 corresponding displayed numbers one the menu and hitting the "Enter"- key.
 Available Options are: Register, Login, Change Password, Account Deletion and Logout.
+In order to start you need to run the AsdUserManagerApplication. java - File.
 
